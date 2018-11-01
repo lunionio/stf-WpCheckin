@@ -10,6 +10,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WpCheckIn.Domains\WpCheckIn.Domains.csproj" />
+    <ProjectReference Include="..\WpCheckIn.Entities\WpCheckIn.Entities.csproj" />
+    <ProjectReference Include="..\WpCheckIn.Infrastructure\WpCheckIn.Infrastructure.csproj" />
+    <ProjectReference Include="..\WpCheckIn.Services\WpCheckIn.Services.csproj" />
   </ItemGroup>
 
 </Project>
