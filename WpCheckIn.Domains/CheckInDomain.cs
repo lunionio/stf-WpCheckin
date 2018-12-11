@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WpCheckIn.Domains.Generics;
@@ -110,6 +111,29 @@ namespace WpCheckIn.Domains
             catch(Exception e)
             {
                 throw new CheckInException("Não foi possível recuperar os check-ins solicitados.", e);
+            }
+        }
+
+        public int GetJobQuantity(int idCliente, int profissionalId)
+        {
+            try
+            {
+                var result = _repository.GetList(x => x.IdCliente.Equals(idCliente) && x.IdUsuario.Equals(profissionalId));
+                var jobQuantity = result.Count();
+
+                return jobQuantity;
+            }
+            catch (InvalidTokenException e)
+            {
+                throw e;
+            }
+            catch (ServiceException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new CheckInException("Não foi possível listar a quantidade de serviços prestados. Entre em contato com suporte.", e);
             }
         }
     }

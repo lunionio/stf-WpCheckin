@@ -79,5 +79,33 @@ namespace WpCheckIn.Controllers
                 return StatusCode(500, "Ocorreu um erro ao tentar salvar o check-in recebido. Entre em contato com o suporte.");
             }
         }
+
+        [HttpGet("Jobs/{idCliente:int}/{profissionalId:int}/{token}")]
+        public async Task<IActionResult> GetQuantidadeJobs([FromRoute]int idCliente, [FromRoute]int profissionalId, [FromRoute]string token)
+        {
+            try
+            {
+                await _service.ValidateTokenAsync(token);
+
+                var quantity = _domain.GetJobQuantity(idCliente, profissionalId);
+                return Ok(quantity);
+            }
+            catch (InvalidTokenException e)
+            {
+                return StatusCode(401, $"{ e.Message } { e.InnerException.Message }");
+            }
+            catch (CheckInException e)
+            {
+                return StatusCode(400, $"{ e.Message } { e.InnerException.Message }");
+            }
+            catch (ServiceException e)
+            {
+                return StatusCode(400, $"{ e.Message } { e.InnerException.Message }");
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Ocorreu um erro ao tentar recuperar as informações solicitadas. Entre em contato com o suporte.");
+            }
+        }
     }
 }
