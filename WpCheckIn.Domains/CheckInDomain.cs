@@ -114,6 +114,19 @@ namespace WpCheckIn.Domains
             }
         }
 
+        public CheckIn GetCheckInUsuario(int idCliente, int idExterno, int idUsuario)
+        {
+            try
+            {
+                var result = _repository.GetList(c => c.IdCliente.Equals(idCliente) && c.CodigoExterno.Equals(idExterno) && c.IdUsuario.Equals(idUsuario));
+                return result.FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                throw new CheckInException("Não foi possível recuperar os check-ins solicitados.", e);
+            }
+        }
+
         public int GetJobQuantity(int idCliente, int profissionalId)
         {
             try

@@ -80,6 +80,34 @@ namespace WpCheckIn.Controllers
             }
         }
 
+        [HttpGet("{idCliente:int}/{idExterno:int}/{idUsuario:int}/{token}")]
+        public async Task<IActionResult> GetCheckInUsuario([FromRoute]int idCliente, [FromRoute]int idExterno,[FromRoute]int idUsuario, [FromRoute]string token)
+        {
+            try
+            {
+                await _service.ValidateTokenAsync(token);
+                var result = _domain.GetCheckInUsuario(idCliente, idExterno, idUsuario);
+
+                return Ok(result);
+            }
+            catch (InvalidTokenException e)
+            {
+                return StatusCode(401, $"{ e.Message } { e.InnerException.Message }");
+            }
+            catch (ServiceException e)
+            {
+                return StatusCode(401, $"{ e.Message } { e.InnerException.Message }");
+            }
+            catch (CheckInException e)
+            {
+                return StatusCode(400, $"{ e.Message } { e.InnerException.Message }");
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Ocorreu um erro ao tentar salvar o check-in recebido. Entre em contato com o suporte.");
+            }
+        }
+
         [HttpGet("Jobs/{idCliente:int}/{profissionalId:int}/{token}")]
         public async Task<IActionResult> GetQuantidadeJobs([FromRoute]int idCliente, [FromRoute]int profissionalId, [FromRoute]string token)
         {
